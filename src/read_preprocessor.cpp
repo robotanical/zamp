@@ -26,7 +26,7 @@ bool ExecPreprocesor(const char *NazwaPliku, std::istringstream &IStrm4Cmds)
 
 int main()
 {
-    std::istringstream aaa;
-    ExecPreprocesor("src/main.cpp", aaa);
-    std::cout << aaa.str();
+    std::istringstream output;
+    ExecPreprocesor("main.cpp", output);
+    std::cout << output.str();
 }

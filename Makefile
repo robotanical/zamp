@@ -1,4 +1,4 @@
-__start__: obj __lines_for_space__ interp __plugin__
+__start__: obj __lines_for_space__ obj/xmlinterp.o obj/LibInterface.o obj/Parser.o obj/Set4LibInterfaces.o interp __plugin__
 	export LD_LIBRARY_PATH="./libs"; ./interp
 
 obj:
@@ -23,11 +23,24 @@ LDFLAGS=-Wall
 
 
 interp: obj/main.o
-	g++ ${LDFLAGS} -o interp  obj/main.o -ldl
+	g++ ${LDFLAGS} -o interp  obj/main.o obj/LibInterface.o obj/Set4LibInterfaces.o obj/Parser.o obj/xmlinterp.o -ldl -lxerces-c
 
-obj/main.o: src/main.cpp inc/Interp4Command.hh
+obj/main.o: src/main.cpp inc/Interp4Command.hh inc/LibInterface.hh\
+	inc/Parser.hh inc/Set4LibInterfaces.hh
 	g++ -c ${CPPFLAGS} -o obj/main.o src/main.cpp
 
+obj/Set4LibInterfaces.o: src/Set4LibInterfaces.cpp inc/Set4LibInterfaces.hh\
+	 inc/Interp4Command.hh inc/LibInterface.hh
+	g++ -c ${CPPFLAGS} -o obj/Set4LibInterfaces.o src/Set4LibInterfaces.cpp
+
+obj/Parser.o: src/Parser.cpp inc/Parser.hh inc/xmlinterp.hh inc/Configuration.hh
+	g++ -c ${CPPFLAGS} -o obj/Parser.o obj/xmlinterp.o src/Parser.cpp 
+
+obj/LibInterface.o: src/LibInterface.cpp inc/LibInterface.hh inc/Interp4Command.hh
+	g++ -c ${CPPFLAGS} -o obj/LibInterface.o src/LibInterface.cpp
+
+obj/xmlinterp.o: src/xmlinterp.cpp inc/xmlinterp.hh inc/Configuration.hh
+	g++ -c ${CPPFLAGS} -o obj/xmlinterp.o src/xmlinterp.cpp 
 clean:
 	rm -f obj/* interp core*
 

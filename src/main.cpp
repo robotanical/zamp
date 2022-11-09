@@ -3,41 +3,37 @@
 #include <cassert>
 #include "Interp4Command.hh"
 #include "MobileObj.hh"
+#include "LibInterface.hh"
+#include "Parser.hh"
+#include "Set4LibInterfaces.hh"
+#include "Configuration.hh"
 
 using namespace std;
 
 
 int main()
 {
-  void *pLibHnd_Move = dlopen("libInterp4Move.so",RTLD_LAZY);
-  Interp4Command *(*pCreateCmd_Move)(void);
-  void *pFun;
-
-  if (!pLibHnd_Move) {
-    cerr << "!!! Brak biblioteki: Interp4Move.so" << endl;
-    return 1;
-  }
+  Parser parser;
+  Set4LibInterfaces libsHandler;
+  std::istringstream stream;
+  parser.initialize("opis_dzialan.cmd");
+  parser.execPreprocessor(stream);
+    Configuration rConfig;
 
 
-  pFun = dlsym(pLibHnd_Move,"CreateCmd");
-  if (!pFun) {
-    cerr << "!!! Nie znaleziono funkcji CreateCmd" << endl;
-    return 1;
-  }
-  pCreateCmd_Move = *reinterpret_cast<Interp4Command* (**)(void)>(&pFun);
-
-
-  Interp4Command *pCmd = pCreateCmd_Move();
-
-  cout << endl;
-  cout << pCmd->GetCmdName() << endl;
-  cout << endl;
-  pCmd->PrintSyntax();
-  cout << endl;
-  pCmd->PrintCmd();
-  cout << endl;
+  libsHandler.initialize();
+  Interp4Command* command;
+  std::string keyword;
+  parser.ReadFile("config/config.xml", rConfig);
   
-  delete pCmd;
+  while (stream >> keyword)
+    {
+      command = libsHandler.getCommand(keyword);
+      command->ReadParams(stream);
+      std::cout << "Wyswietl polecenie:" << std::endl;
+      command->PrintCmd();
+    }
 
-  dlclose(pLibHnd_Move);
+
+  return 0;
 }
