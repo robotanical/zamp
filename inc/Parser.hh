@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef PARSER_HH
+#define PARSER_HH
 #include <cstdio>
 #include <sstream>
 #include <string>
@@ -26,5 +26,6 @@ class Parser
         Parser(){};
         int initialize(std::string cmdFileName);
         bool execPreprocessor(std::istringstream &IStrm4Cmds);
-        bool ReadFile(const char* sFileName, Configuration &rConfig);
+        bool ReadFile(const char* sFileName, shared_ptr<Configuration> rConfig);
 };
+#endif

@@ -1,6 +1,7 @@
 #ifndef MOBILEOBJ_HH
 #define MOBILEOBJ_HH
 
+#define STATES_NUMBER   8
 
 #include <string>
 #include "Vector3D.hh"
@@ -23,6 +24,8 @@
     * Nazwy metod są obowiązujące.
     */
     class MobileObj {
+        int _StateIdx = 0;
+        const char** _Cmd4StatDesc = nullptr;
        /*!
         * \brief Kąt \e yaw reprezentuje rotację zgodnie z ruchem wskazówek zegara
         *        wokół osi \e OZ.
@@ -148,7 +151,16 @@
 	* Udostępnia nazwę obiektu w trybie tylko do odczytu.
         */
        const std::string & GetName() const { return _Name; }
-    };
-
-
+       void SetCmds(const char *CmdsTab[STATES_NUMBER]) { _Cmd4StatDesc = CmdsTab; }
+       const char* GetStateDesc() const
+        {
+        return _Cmd4StatDesc[_StateIdx];
+        }
+        bool IncStateIndex() {
+        if (_StateIdx >= STATES_NUMBER-1) return false;
+        ++_StateIdx;
+        return true;
+        }
+        };
+        
 #endif

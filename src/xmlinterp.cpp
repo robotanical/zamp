@@ -5,6 +5,10 @@
 #include <cstdlib>
 #include <iostream>
 
+#include <cstdio>
+#include <sstream>
+#include <string>
+#include <iostream>
 
 
 using namespace std;
@@ -14,7 +18,7 @@ using namespace std;
  * Konstruktor klasy. Tutaj należy zainicjalizować wszystkie
  * dodatkowe pola.
  */
-XMLInterp4Config::XMLInterp4Config(Configuration &rConfig)
+XMLInterp4Config::XMLInterp4Config(shared_ptr<Configuration> rConfig)
 {
 }
 

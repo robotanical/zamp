@@ -25,7 +25,7 @@ bool Parser::execPreprocessor(std::istringstream &IStrm4Cmds)
     IStrm4Cmds.str(OTmpStrm.str());
     return pclose(pProc) == 0;
 }
-bool Parser::ReadFile(const char* sFileName, Configuration &rConfig)
+bool Parser::ReadFile(const char* sFileName, shared_ptr<Configuration> rConfig)
 {
    try {
             XMLPlatformUtils::Initialize();

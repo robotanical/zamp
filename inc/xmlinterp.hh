@@ -2,6 +2,7 @@
 #define XMLINTERP4ACTIONS_HH
 
 #include <string>
+#include <memory>
 #include <xercesc/util/XMLString.hpp>
 //#include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/util/PlatformUtils.hpp>
@@ -26,7 +27,7 @@ class XMLInterp4Config : public xercesc::DefaultHandler {
    /*!
     * \brief Inicjalizuje obiekt i kojarzy go z listą poleceń robota
     */
-  XMLInterp4Config(Configuration &rConfig);
+  XMLInterp4Config(std::shared_ptr<Configuration> rConfig);
 
    /*!
     * \brief Wywoływana jest na początku dokumentu
@@ -84,6 +85,7 @@ class XMLInterp4Config : public xercesc::DefaultHandler {
      */
     void ProcessCubeAttrs(const xercesc::Attributes&   rAttrs); 
   private:
+  Configuration _config;
 };
 
 #endif
