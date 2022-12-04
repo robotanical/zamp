@@ -7,6 +7,8 @@
 #include "LibInterface.hh"
 #include "Interp4Command.hh"
 #include <memory>
+#include <vector>
+
 
 class Set4LibInterfaces
 {
@@ -15,5 +17,6 @@ private:
 
 public:
     int initialize();
+    int initialize(std::vector<std::string> lib_names);
     Interp4Command * getCommand(std::string keyword);
 };

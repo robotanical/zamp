@@ -35,3 +35,14 @@ Interp4Command * Set4LibInterfaces::getCommand(std::string keyword)
     handler = iterator->second;
     return handler->CreateCmd();
 }
+int Set4LibInterfaces::initialize(std::vector<std::string> lib_names)
+{
+    for(std::string &name : lib_names )
+    {
+        std::shared_ptr<LibInterface> tmp = std::make_shared<LibInterface>();
+        tmp->initialize("libs/"+name);
+        _libs.insert(std::make_pair(name,tmp));
+    }
+    return 0;
+
+}

@@ -1,4 +1,4 @@
-__start__: obj __lines_for_space__ obj/xmlinterp.o obj/Client.o obj/LibInterface.o obj/Parser.o obj/Set4LibInterfaces.o obj/Executor.o interp __plugin__
+__start__: obj __lines_for_space__ obj/MobileObj.o obj/Scene.o obj/Configuration.o obj/xmlinterp.o obj/Client.o obj/LibInterface.o obj/Parser.o obj/Set4LibInterfaces.o obj/Executor.o interp __plugin__
 	export LD_LIBRARY_PATH="./libs"; ./interp
 
 obj:
@@ -23,7 +23,7 @@ LDFLAGS=-Wall
 
 
 interp: obj/main.o
-	g++ ${LDFLAGS} -o interp  obj/main.o obj/LibInterface.o obj/Set4LibInterfaces.o obj/Parser.o obj/xmlinterp.o obj/Executor.o obj/Client.o -ldl -lxerces-c -lpthread
+	g++ ${LDFLAGS} -o interp  obj/main.o obj/MobileObj.o obj/Scene.o obj/Configuration.o obj/LibInterface.o obj/Set4LibInterfaces.o obj/Parser.o obj/xmlinterp.o obj/Executor.o obj/Client.o -ldl -lxerces-c -lpthread
 
 obj/main.o: src/main.cpp inc/Executor.hh inc/Client.hh
 	g++ -c ${CPPFLAGS} -o obj/main.o src/main.cpp
@@ -37,7 +37,7 @@ obj/Set4LibInterfaces.o: src/Set4LibInterfaces.cpp inc/Set4LibInterfaces.hh\
 	g++ -c ${CPPFLAGS} -o obj/Set4LibInterfaces.o src/Set4LibInterfaces.cpp
 
 obj/Parser.o: src/Parser.cpp inc/Parser.hh inc/xmlinterp.hh inc/Configuration.hh
-	g++ -c ${CPPFLAGS} -o obj/Parser.o obj/xmlinterp.o src/Parser.cpp 
+	g++ -c ${CPPFLAGS} -o obj/Parser.o obj/xmlinterp.o  obj/Configuration.o src/Parser.cpp 
 
 obj/LibInterface.o: src/LibInterface.cpp inc/LibInterface.hh inc/Interp4Command.hh
 	g++ -c ${CPPFLAGS} -o obj/LibInterface.o src/LibInterface.cpp
@@ -45,11 +45,17 @@ obj/LibInterface.o: src/LibInterface.cpp inc/LibInterface.hh inc/Interp4Command.
 obj/xmlinterp.o: src/xmlinterp.cpp inc/xmlinterp.hh inc/Configuration.hh
 	g++ -c ${CPPFLAGS} -o obj/xmlinterp.o src/xmlinterp.cpp
 
-obj/Client.o: src/Client.cpp inc/Client.hh 
-	g++ -c ${CPPFLAGS} -o obj/Client.o src/Client.cpp 
+obj/Client.o: src/Client.cpp inc/Client.hh inc/Scene.hh
+	g++ -c ${CPPFLAGS} -o obj/Client.o obj/Scene.o src/Client.cpp 
 
-# obj/Scene.o: src/Scene.cpp inc/Scene.hh
-# 	g++ -c ${CPPFLAGS} -o obj/Scene.o src/Scene.cpp
+obj/Scene.o: src/Scene.cpp inc/Scene.hh inc/MobileObj.hh
+	g++ -c ${CPPFLAGS} -o obj/Scene.o obj/MobileObj.o src/Scene.cpp
+
+obj/Configuration.o: src/Configuration.cpp inc/Configuration.hh inc/Scene.hh 
+	g++ -c ${CPPFLAGS} -o obj/Configuration.o obj/Scene.o src/Configuration.cpp
+
+obj/MobileObj.o : src/MobileObj.cpp inc/MobileObj.hh
+	g++ -c ${CPPFLAGS} -o obj/MobileObj.o src/MobileObj.cpp
 
 clean:
 	rm -f obj/* interp core*

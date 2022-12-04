@@ -1,166 +1,73 @@
 #ifndef MOBILEOBJ_HH
 #define MOBILEOBJ_HH
 
-#define STATES_NUMBER   8
-
 #include <string>
+
 #include "Vector3D.hh"
 
+class MobileObj {
+  int _StateIdx = 0;
+  char* _Cmd4StatDesc = nullptr;
+  double _Ang_Yaw_deg = 0;
+  double _Ang_Pitch_deg = 0;
+  double _Ang_Roll_deg = 0;
+  Vector3D _Position_m;
+  Vector3D _rgb;
+  Vector3D _trans;
+  Vector3D _scale;
+  std::string _Name;
 
-/*!
- * \file
- * \brief Zawiera definicję klasy MobileObj
- *
- * Plik zawiera definicję klasy MobileObj.
- * Definicja to może być rozszerzona i zmienione mogą
- * być nazwy pól. Obowiązkowe są jedynie nazwy metod.
- */
+ public:
+  MobileObj() = default;
+  MobileObj(const MobileObj&) = default;
+  double GetAng_Roll_deg() const { return _Ang_Roll_deg; }
+  double GetAng_Pitch_deg() const { return _Ang_Pitch_deg; }
+  double GetAng_Yaw_deg() const { return _Ang_Yaw_deg; }
+  void SetAng_Roll_deg(double Ang_Roll_deg) { _Ang_Roll_deg = Ang_Roll_deg; }
+  void SetAng_Pitch_deg(double Ang_Pitch_deg) {
+    _Ang_Pitch_deg = Ang_Pitch_deg;
+  }
+  void SetRotation(Vector3D rot) {
+    SetAng_Roll_deg(rot[0]);
+    SetAng_Pitch_deg(rot[1]);
+    SetAng_Yaw_deg(rot[2]);
+  }
+  Vector3D GetRGB() { return _rgb; }
+  Vector3D GetScale() { return _scale; }
+  void SetRGB(Vector3D rgb) { _rgb = rgb; }
+  void SetTrans(Vector3D trans) { _trans = trans; }
+  void SetScale(Vector3D scale) { _scale = scale; }
+  void SetAng_Yaw_deg(double Ang_Yaw_deg) { _Ang_Yaw_deg = Ang_Yaw_deg; }
+  const Vector3D& GetPositoin_m() const { return _Position_m; }
+  Vector3D& UsePosition_m() { return _Position_m; }
+  void SetPosition_m(const Vector3D& rPos_m) { _Position_m = rPos_m; }
+  void SetName(const char* sName) { _Name = sName; }
+  const std::string& GetName() const { return _Name; }
+  void SetCmds(char* CmdsTab) { _Cmd4StatDesc = CmdsTab; }
+  const char* GetStateDesc() const { return _Cmd4StatDesc; }
+  const char* GetAddObj() const {
+    std::string tmp;
+    tmp += "AddObj Name=";
+    tmp += _Name;
+    tmp += " RotXYZ=(";
+    tmp += std::to_string(_Ang_Roll_deg) + ",";
+    tmp += std::to_string(_Ang_Pitch_deg) + ",";
+    tmp += std::to_string(_Ang_Yaw_deg) + ") ";
+    tmp += "Scale=(";
+    tmp += std::to_string(_scale[0]) + "," + std::to_string(_scale[1]) + "," +
+           std::to_string(_scale[2]) + ") ";
+    tmp += "Shift=(";
+    tmp += std::to_string(_Position_m[0]) + "," +
+           std::to_string(_Position_m[1]) + "," +
+           std::to_string(_Position_m[2]) + ") ";
+    tmp += "RGB=(";
+    tmp += std::to_string(_rgb[0]) + "," + std::to_string(_rgb[1]) + "," +
+           std::to_string(_rgb[2]) + ") ";
+    tmp += "Trans_m=(";
+    tmp += std::to_string(_trans[0]) + "," + std::to_string(_trans[1]) + "," +
+           std::to_string(_trans[2]) + ") ";
+    return tmp.c_str();
+  }
+};
 
-
-
-
-   /*!
-    * Nazwy pól klasy są jedynie propozycją i mogą być zmienione
-    * Nazwy metod są obowiązujące.
-    */
-    class MobileObj {
-        int _StateIdx = 0;
-        const char** _Cmd4StatDesc = nullptr;
-       /*!
-        * \brief Kąt \e yaw reprezentuje rotację zgodnie z ruchem wskazówek zegara
-        *        wokół osi \e OZ.
-	*
-	* Kąt \e yaw reprezentuje rotację zgodnie z ruchem wskazówek zegara
-        * wokół osi \e OZ. Wartość kąta wyrażona jest w stopniach.
-        */
-       double _Ang_Yaw_deg = 0;
-
-       /*!
-        * \brief Kąt \e pitch reprezentuje rotację zgodnie z ruchem wskazówek zegara
-        *        wokół osi \e OY.
-	*
-	* Kąt \e pitch reprezentuje rotację zgodnie z ruchem wskazówek zegara
-        * wokół osi \e OY. Wartość kąta wyrażona jest w stopniach.
-        */
-       double _Ang_Pitch_deg = 0;
-
-       /*!
-        * \brief Kąt \e roll reprezentuje rotację zgodnie z ruchem wskazówek zegara
-        *        wokół osi \e OX.
-	*
-	* Kąt \e roll reprezentuje rotację zgodnie z ruchem wskazówek zegara
-        * wokół osi \e OX. Wartość kąta wyrażona jest w stopniach.
-        */
-       double _Ang_Roll_deg = 0;
-
-       /*!
-        * \brief Współrzędne aktualnej pozycji obiektu.
-	*
-	* Współrzędne aktualnej pozycji obiektu. Przyjmuje się,
-	* że współrzędne wyrażone są w metrach.
-        */
-       Vector3D  _Position_m;
-
-       /*!
-        * \brief Nazwa obiektu, która go indentyfikuje.
-        *
-        * Nazwa obiektu, która go indentyfikuje. Z tego względu musi
-        * musi to być nazwa unikalna wśród wszystkich obiektów na scenie.
-        */
-       std::string  _Name;
-
-     public:
-      /*!
-       * \brief Udostępia wartość kąta \e roll.
-       *
-       * Udostępia wartość kąta \e roll. Jest ona wyrażona w stopniach.
-       */
-       double GetAng_Roll_deg() const { return _Ang_Roll_deg; }
-      /*!
-       * \brief Udostępia wartość kąta \e pitch.
-       *
-       * Udostępia wartość kąta \e pitch. Jest ona wyrażona w stopniach.
-       */
-       double GetAng_Pitch_deg() const { return _Ang_Pitch_deg; }
-       /*!
-       * \brief Udostępia wartość kąta \e yaw.
-       *
-       * Udostępia wartość kąta \e yaw. Jest ona wyrażona w stopniach.
-       */
-       double GetAng_Yaw_deg() const { return _Ang_Yaw_deg; }
-
-      /*!
-       * \brief Zmienia wartość kąta \e roll.
-       *
-       * Zmienia wartość kąta \e roll.
-       * \param[in] Ang_Roll_deg - nowa wartość kąta \e roll wyrażona w stopniach.
-       */
-       void SetAng_Roll_deg(double Ang_Roll_deg) { _Ang_Roll_deg = Ang_Roll_deg; }
-      /*!
-       * \brief Zmienia wartość kąta \e pitch.
-       *
-       * Zmienia wartość kąta \e pitch.
-       * \param[in] Ang_Pitch_deg - nowa wartość kąta \e pitch wyrażona w stopniach.
-       */
-       void SetAng_Pitch_deg(double Ang_Pitch_deg) { _Ang_Pitch_deg = Ang_Pitch_deg; }
-      /*!
-       * \brief Zmienia wartość kąta \e yaw.
-       *
-       * Zmienia wartość kąta \e yaw.
-       * \param[in] Ang_Yaw_deg - nowa wartość kąta \e yaw wyrażona w stopniach.
-       */
-       void SetAng_Yaw_deg(double Ang_Yaw_deg) { _Ang_Yaw_deg = Ang_Yaw_deg; }
-
-      /*!
-       * \brief Udostępnia współrzędne położenia obiektu w trybie tylko do odczytu.
-       *
-       * Udostępnia współrzędne punktu, który definiuje położenia obiektu
-       * w trybie tylko do odczytu.
-       * Domyślnie przyjmuje się, że jest to geometryczny środek bryły.
-       */
-       const Vector3D & GetPositoin_m() const { return _Position_m; }
-      /*!
-       * \brief Udostępnia współrzędne położenia obiektu w trybie modyfikacji.
-       *
-       * Udostępnia współrzędne punktu, który definiuje położenia obiektu
-       * w trybie modyfikacji.
-       * Domyślnie przyjmuje się, że jest to geometryczny środek bryły.
-       */
-       Vector3D & UsePosition_m() { return _Position_m; }
-      /*!
-       * \brief Zmienia współrzędne położenia obiektu.
-       *
-       * Zmienia współrzędne punktu, który definiuje położenia obiektu.
-       * Domyślnie przyjmuje się, że jest to geometryczny środek bryły.
-       * \param[in] rPos_m - współrzędne nowgo położenia. Przyjmuje się,
-       *                     że są one wyrażone w metrach.
-       */
-       void SetPosition_m(const Vector3D &rPos_m) { _Position_m = rPos_m; }
-
-
-      /*!
-       * \brief Zmienia nazwę obiektu.
-       *
-       *  Zmienia nazwę obiektu.
-       *  \param[in] sName - nowa nazwa obiektu.
-       */
-       void SetName(const char* sName) { _Name = sName; }
-       /*!
-        * \brief Udostępnia nazwę obiektu.
-	*
-	* Udostępnia nazwę obiektu w trybie tylko do odczytu.
-        */
-       const std::string & GetName() const { return _Name; }
-       void SetCmds(const char *CmdsTab[STATES_NUMBER]) { _Cmd4StatDesc = CmdsTab; }
-       const char* GetStateDesc() const
-        {
-        return _Cmd4StatDesc[_StateIdx];
-        }
-        bool IncStateIndex() {
-        if (_StateIdx >= STATES_NUMBER-1) return false;
-        ++_StateIdx;
-        return true;
-        }
-        };
-        
 #endif
