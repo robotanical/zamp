@@ -5,7 +5,12 @@ Executor::Executor(Scene &scene) : _scene(scene) {
   //   client client(_scene);
 }
 
-Executor::~Executor() { delete _command; }
+Executor::~Executor() {
+  delete _command;
+  for (int i = 0; i < parallel_actions.size(); i++) {
+    if (parallel_actions[i].joinable()) parallel_actions[i].join();
+  }
+}
 
 int Executor::initialize(std::string cmdFName) {
   std::string key;
@@ -20,7 +25,7 @@ int Executor::initialize(std::string cmdFName) {
             std::thread(&Interp4Command::ExecCmd, _command, std::ref(_scene)));
       } else {
         for (int i = 0; i < parallel_actions.size(); i++) {
-          parallel_actions[i].join();
+          if (parallel_actions[i].joinable()) parallel_actions[i].join();
         }
         _command->ExecCmd(_scene);
       }
