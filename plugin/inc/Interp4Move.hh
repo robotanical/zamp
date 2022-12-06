@@ -1,18 +1,20 @@
-#ifndef  COMMAND4MOVE_HH
-#define  COMMAND4MOVE_HH
+#ifndef COMMAND4MOVE_HH
+#define COMMAND4MOVE_HH
 
 #ifndef __GNUG__
-# pragma interface
-# pragma implementation
+#pragma interface
+#pragma implementation
 #endif
 
+#include <unistd.h>
+
 #include <cmath>
+
+#include "Client.hh"
 #include "Interp4Command.hh"
 #include "MobileObj.hh"
 #include "Scene.hh"
-#include "Client.hh"
 #include "Vector3D.hh"
-#include <unistd.h>
 /*!
  * \file
  * \brief Definicja klasy Interp4Move
@@ -21,17 +23,18 @@
  */
 
 /*!
- * \brief Modeluje polecenie dla robota mobilnego, które wymusza jego ruch do przodu
+ * \brief Modeluje polecenie dla robota mobilnego, które wymusza jego ruch do
+ * przodu
  *
  *  Klasa modeluje ...
  */
-class Interp4Move: public Interp4Command {
+class Interp4Move : public Interp4Command {
   /*
    *  Tu należy zdefiniować pola, które są niezbędne
    *  do przechowywania wartości parametrów danego polecenia.
    *  Ponieżej zdefiniowane jest tylko jedno pole jako przykład.
    */
-  double  _Speed_mmS;
+  double _Speed_mmS;
   std::string _Name;
   double _Length_mm;
 
@@ -39,9 +42,10 @@ class Interp4Move: public Interp4Command {
   /*!
    * \brief
    */
-  Interp4Move();  
+  Interp4Move();
   /*!
-   * \brief Wyświetla postać bieżącego polecenia (nazwę oraz wartości parametrów)
+   * \brief Wyświetla postać bieżącego polecenia (nazwę oraz wartości
+   * parametrów)
    */
   virtual void PrintCmd() const;
   /*!
@@ -55,7 +59,7 @@ class Interp4Move: public Interp4Command {
   /*!
    * \brief Wykonuje polecenie oraz wizualizuje jego realizację
    */
-  virtual bool ExecCmd( Scene& scene, Client& client) const;
+  virtual bool ExecCmd(Scene& scene) const;
   /*!
    * \brief Czyta wartości parametrów danego polecenia
    */
@@ -70,6 +74,6 @@ class Interp4Move: public Interp4Command {
    *  Ta metoda nie musi być zdefiniowna w klasie bazowej.
    */
   static Interp4Command* CreateCmd();
- };
+};
 
 #endif

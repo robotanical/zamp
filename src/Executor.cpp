@@ -15,7 +15,16 @@ int Executor::initialize(std::string cmdFName) {
     _command = _libs_handler.getCommand(key);
     if (_command != nullptr) {
       _command->ReadParams(_stream);
-      _command->ExecCmd(_scene, _client);
+      if (_libs_handler.isParallel()) {
+        parallel_actions.push_back(
+            std::thread(&Interp4Command::ExecCmd, _command, _scene));
+      } else {
+        for (int i = 0; i < parallel_actions.size(); i++) {
+          if (parallel_actions[i].joinable()) parallel_actions[i].join();
+        }
+        _command->ExecCmd(_scene);
+      }
+      // _command->ExecCmd(_scene);
     }
   }
   return 0;

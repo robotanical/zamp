@@ -43,8 +43,7 @@ const char* Interp4Move::GetCmdName() const { return ::GetCmdName(); }
 /*!
  *
  */
-bool Interp4Move::ExecCmd(Scene& scene, Client& client) const {
-  std::cout << "poczatek move";
+bool Interp4Move::ExecCmd(Scene& scene) const {
   Vector3D pos;
   Vector3D rot;
   Vector3D tmp;
@@ -80,7 +79,6 @@ bool Interp4Move::ExecCmd(Scene& scene, Client& client) const {
     scene.MarkChange();
     scene.UnlockAccess();
     usleep(step_time * 1000000);
-    // client.send(scene.getMobileObj(_Name).GetUpdateObj());
   }
   double remaining_length = _Length_mm - (steps * step_length);
   if (remaining_length) {

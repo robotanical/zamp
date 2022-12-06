@@ -1,15 +1,15 @@
-#ifndef  COMMAND4SET_HH
-#define  COMMAND4SET_HH
+#ifndef COMMAND4SET_HH
+#define COMMAND4SET_HH
 
 #ifndef __GNUG__
-# pragma interface
-# pragma implementation
+#pragma interface
+#pragma implementation
 #endif
 
+#include "Client.hh"
 #include "Interp4Command.hh"
 #include "MobileObj.hh"
 #include "Scene.hh"
-#include "Client.hh"
 #include "Vector3D.hh"
 /*!
  * \file
@@ -19,11 +19,12 @@
  */
 
 /*!
- * \brief Modeluje polecenie dla robota mobilnego, które wymusza jego ruch do przodu
+ * \brief Modeluje polecenie dla robota mobilnego, które wymusza jego ruch do
+ * przodu
  *
  *  Klasa modeluje ...
  */
-class Interp4Set: public Interp4Command {
+class Interp4Set : public Interp4Command {
   /*
    *  Tu należy zdefiniować pola, które są niezbędne
    *  do przechowywania wartości parametrów danego polecenia.
@@ -33,13 +34,15 @@ class Interp4Set: public Interp4Command {
   double _x;
   double _y;
   double _angle_OZ;
+
  public:
   /*!
    * \brief
    */
-  Interp4Set();  
+  Interp4Set();
   /*!
-   * \brief Wyświetla postać bieżącego polecenia (nazwę oraz wartości parametrów)
+   * \brief Wyświetla postać bieżącego polecenia (nazwę oraz wartości
+   * parametrów)
    */
   virtual void PrintCmd() const;
   /*!
@@ -53,7 +56,7 @@ class Interp4Set: public Interp4Command {
   /*!
    * \brief Wykonuje polecenie oraz wizualizuje jego realizację
    */
-  virtual bool ExecCmd( Scene& scene, Client& client) const;
+  virtual bool ExecCmd(Scene& scene) const;
   /*!
    * \brief Czyta wartości parametrów danego polecenia
    */
@@ -68,6 +71,6 @@ class Interp4Set: public Interp4Command {
    *  Ta metoda nie musi być zdefiniowna w klasie bazowej.
    */
   static Interp4Command* CreateCmd();
- };
+};
 
 #endif

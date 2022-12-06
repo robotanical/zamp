@@ -1,4 +1,5 @@
 #include "Set4LibInterfaces.hh"
+bool Set4LibInterfaces::isParallel() { return is_parallel; }
 
 int Set4LibInterfaces::initialize() {
   std::shared_ptr<LibInterface> move = std::make_shared<LibInterface>();
@@ -24,8 +25,10 @@ Interp4Command *Set4LibInterfaces::getCommand(std::string keyword) {
   std::shared_ptr<LibInterface> handler;
   if (keyword == "begin_parallel") {
     std::cout << "parallel true" << std::endl;
+    is_parallel = true;
   } else if (keyword == "end_parallel") {
     std::cout << "parallel false" << std::endl;
+    is_parallel = false;
   } else {
     std::map<std::string, std::shared_ptr<LibInterface>>::iterator iterator =
         _libs.find(keyword);

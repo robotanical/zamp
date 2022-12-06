@@ -43,7 +43,7 @@ const char* Interp4Rotate::GetCmdName() const { return ::GetCmdName(); }
 /*!
  *
  */
-bool Interp4Rotate::ExecCmd(Scene& scene, Client& client) const {
+bool Interp4Rotate::ExecCmd(Scene& scene) const {
   Vector3D rot;
   rot[0] = scene.getMobileObj(_name).GetAng_Roll_deg();
   rot[1] = scene.getMobileObj(_name).GetAng_Pitch_deg();

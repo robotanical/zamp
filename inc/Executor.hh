@@ -32,5 +32,6 @@ class Executor {
   std::string keyword;
   Client _client = Client(_scene);
   std::thread* sending_thread;
+  std::vector<std::thread> parallel_actions;
 };
 #endif

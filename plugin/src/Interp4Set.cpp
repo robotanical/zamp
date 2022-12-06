@@ -42,7 +42,7 @@ const char* Interp4Set::GetCmdName() const { return ::GetCmdName(); }
 /*!
  *
  */
-bool Interp4Set::ExecCmd(Scene& scene, Client& client) const {
+bool Interp4Set::ExecCmd(Scene& scene) const {
   /*
    *  Tu trzeba napisać odpowiedni kod.
    */
