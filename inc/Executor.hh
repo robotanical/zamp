@@ -31,5 +31,6 @@ class Executor {
   Scene& _scene;
   std::string keyword;
   Client _client = Client(_scene);
+  std::thread* sending_thread;
 };
 #endif
