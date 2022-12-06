@@ -52,7 +52,7 @@ bool Interp4Set::ExecCmd(Scene& scene) const {
   rot[1] = scene.getMobileObj(_name).GetAng_Pitch_deg();
   rot[2] = _angle_OZ;
   scene.LockAccess();
-  // scene.getMobileObj(_name).SetPosition_m(pos);
+  scene.getMobileObj(_name).SetPosition_m(pos);
   scene.getMobileObj(_name).SetRotation(rot);
   scene.MarkChange();
   scene.UnlockAccess();

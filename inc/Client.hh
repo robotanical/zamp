@@ -48,6 +48,7 @@ class Client {
     return true;
   };
   void communicationThread() {
+    send("Clear\n");
     _scene.UnlockAccess();
     while (getContinueLooping()) {
       if (!_scene.IsChanged()) {
