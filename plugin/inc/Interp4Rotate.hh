@@ -7,7 +7,11 @@
 #endif
 
 #include "Interp4Command.hh"
-
+#include "MobileObj.hh"
+#include "Scene.hh"
+#include "Client.hh"
+#include "Vector3D.hh"
+#include <unistd.h>
 /*!
  * \file
  * \brief Definicja klasy Interp4Rotate
@@ -49,7 +53,7 @@ class Interp4Rotate: public Interp4Command {
   /*!
    * \brief Wykonuje polecenie oraz wizualizuje jego realizację
    */
-  virtual bool ExecCmd( MobileObj  *pMobObj, int Socket) const;
+  virtual bool ExecCmd(Scene& scene, Client& client) const;
   /*!
    * \brief Czyta wartości parametrów danego polecenia
    */

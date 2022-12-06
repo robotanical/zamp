@@ -38,35 +38,64 @@ class MobileObj {
   void SetTrans(Vector3D trans) { _trans = trans; }
   void SetScale(Vector3D scale) { _scale = scale; }
   void SetAng_Yaw_deg(double Ang_Yaw_deg) { _Ang_Yaw_deg = Ang_Yaw_deg; }
-  const Vector3D& GetPositoin_m() const { return _Position_m; }
+  const Vector3D& GetPosition_m() const { return _Position_m; }
   Vector3D& UsePosition_m() { return _Position_m; }
   void SetPosition_m(const Vector3D& rPos_m) { _Position_m = rPos_m; }
   void SetName(const char* sName) { _Name = sName; }
   const std::string& GetName() const { return _Name; }
   void SetCmds(char* CmdsTab) { _Cmd4StatDesc = CmdsTab; }
   const char* GetStateDesc() const { return _Cmd4StatDesc; }
-  const char* GetAddObj() const {
+  std::string GetAddObj() const {
     std::string tmp;
     tmp += "AddObj Name=";
     tmp += _Name;
-    tmp += " RotXYZ=(";
-    tmp += std::to_string(_Ang_Roll_deg) + ",";
-    tmp += std::to_string(_Ang_Pitch_deg) + ",";
-    tmp += std::to_string(_Ang_Yaw_deg) + ") ";
-    tmp += "Scale=(";
+    tmp += " RGB=(";
+    tmp += std::to_string(int(_rgb[0])) + "," + std::to_string(int(_rgb[1])) + "," +
+           std::to_string(int(_rgb[2])) + ") ";
+           tmp += "Scale=(";
     tmp += std::to_string(_scale[0]) + "," + std::to_string(_scale[1]) + "," +
            std::to_string(_scale[2]) + ") ";
     tmp += "Shift=(";
     tmp += std::to_string(_Position_m[0]) + "," +
            std::to_string(_Position_m[1]) + "," +
            std::to_string(_Position_m[2]) + ") ";
-    tmp += "RGB=(";
-    tmp += std::to_string(_rgb[0]) + "," + std::to_string(_rgb[1]) + "," +
-           std::to_string(_rgb[2]) + ") ";
+    tmp += "RotXYZ_deg=(";
+    tmp += std::to_string(_Ang_Roll_deg) + ",";
+    tmp += std::to_string(_Ang_Pitch_deg) + ",";
+    tmp += std::to_string(_Ang_Yaw_deg) + ") ";
+    
+    
     tmp += "Trans_m=(";
     tmp += std::to_string(_trans[0]) + "," + std::to_string(_trans[1]) + "," +
-           std::to_string(_trans[2]) + ") ";
-    return tmp.c_str();
+           std::to_string(_trans[2]) + ")\n ";
+          //  std::cout << "mobobj addobj string:" << tmp.c_str() << std::endl;
+    return tmp;
+  }
+  std::string GetUpdateObj() const{
+    std::string tmp;
+    tmp += "UpdateObj Name=";
+    tmp += _Name;
+    tmp += " RGB=(";
+    tmp += std::to_string(int(_rgb[0])) + "," + std::to_string(int(_rgb[1])) + "," +
+           std::to_string(int(_rgb[2])) + ") ";
+           tmp += "Scale=(";
+    tmp += std::to_string(_scale[0]) + "," + std::to_string(_scale[1]) + "," +
+           std::to_string(_scale[2]) + ") ";
+    tmp += "Shift=(";
+    tmp += std::to_string(_Position_m[0]) + "," +
+           std::to_string(_Position_m[1]) + "," +
+           std::to_string(_Position_m[2]) + ") ";
+    tmp += "RotXYZ_deg=(";
+    tmp += std::to_string(_Ang_Roll_deg) + ",";
+    tmp += std::to_string(_Ang_Pitch_deg) + ",";
+    tmp += std::to_string(_Ang_Yaw_deg) + ") ";
+    
+    
+    tmp += "Trans_m=(";
+    tmp += std::to_string(_trans[0]) + "," + std::to_string(_trans[1]) + "," +
+           std::to_string(_trans[2]) + ")\n ";
+          //  std::cout << "mobobj addobj string:" << tmp.c_str() << std::endl;
+    return tmp;
   }
 };
 

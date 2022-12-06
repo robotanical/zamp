@@ -56,11 +56,33 @@ const char* Interp4Rotate::GetCmdName() const
 /*!
  *
  */
-bool Interp4Rotate::ExecCmd( MobileObj  *pMobObj,  int  Socket) const
+bool Interp4Rotate::ExecCmd( Scene& scene, Client& client) const
 {
-  /*
-   *  Tu trzeba napisać odpowiedni kod.
-   */
+  Vector3D rot;
+  rot[0] = scene.getMobileObj(_name).GetAng_Roll_deg();
+  rot[1] = scene.getMobileObj(_name).GetAng_Pitch_deg();
+  rot[2] = scene.getMobileObj(_name).GetAng_Yaw_deg();
+  
+  double duration = _angle/_Speed_deg;
+  double steps = (int)(duration*100);
+  double step_duration = duration/steps;
+  double step_deg = _angle/steps;
+
+
+  double tmp = 0;
+    for (int i = 0; i < steps; ++i)
+  {
+    scene.LockAccess(); // Lock access to the scene to modify something :)
+    tmp += step_deg;
+    rot[2] = tmp+rot[2];
+    scene.getMobileObj(_name).SetRotation(rot);
+    scene.MarkChange();
+    scene.UnlockAccess();
+    usleep(step_duration * 1000000);
+    client.send(scene.getMobileObj(_name).GetUpdateObj());
+  }
+  return true;
+  
   return true;
 }
 

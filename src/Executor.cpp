@@ -8,21 +8,24 @@ Executor::Executor(Scene &scene) : _scene(scene) {
 Executor::~Executor() { delete _command; }
 
 int Executor::initialize(std::string cmdFName) {
+  std::string key;
   _parser.initialize(cmdFName.c_str());
   _parser.execPreprocessor(_stream);
-  // _libs_handler.initialize();
-
+  while(_stream >> key)
+  {
+    _command = _libs_handler.getCommand(key);
+    _command->ReadParams(_stream);
+    _command->ExecCmd(_scene, _client);
+    
+  }
   return 0;
 }
 
 int Executor::configure(std::string configFName) {
   _parser.ReadFile(configFName.c_str(), _config);
-  std::cout << "cokolwiek" << std::endl;
-
   _libs_handler.initialize(_config->getLibNames());
   _client.openConnection();
   _client.initAllObjects();
-  std::cout << "cokolwiek" << std::endl;
 
   return 0;
 }

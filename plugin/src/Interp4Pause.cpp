@@ -56,11 +56,11 @@ const char* Interp4Pause::GetCmdName() const
 /*!
  *
  */
-bool Interp4Pause::ExecCmd( MobileObj  *pMobObj,  int  Socket) const
+bool Interp4Pause::ExecCmd( Scene& scene, Client& client) const
 {
-  /*
-   *  Tu trzeba napisać odpowiedni kod.
-   */
+  scene.LockAccess();
+  usleep(_Time_ms*1000);
+  scene.UnlockAccess();
   return true;
 }
 

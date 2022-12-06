@@ -55,11 +55,26 @@ const char* Interp4Set::GetCmdName() const
 /*!
  *
  */
-bool Interp4Set::ExecCmd( MobileObj  *pMobObj,  int  Socket) const
+bool Interp4Set::ExecCmd( Scene& scene, Client& client) const
 {
   /*
    *  Tu trzeba napisać odpowiedni kod.
    */
+   
+   Vector3D pos;
+   pos[0]=_x;
+   pos[1]=_y;
+   pos[2]=scene.getMobileObj(_name).GetPosition_m()[2];
+   Vector3D rot;
+   rot[0]=scene.getMobileObj(_name).GetAng_Roll_deg();
+   rot[1]=scene.getMobileObj(_name).GetAng_Pitch_deg();
+   rot[2]=_angle_OZ;
+   scene.LockAccess();
+    scene.getMobileObj(_name).SetPosition_m(pos);
+    scene.getMobileObj(_name).SetRotation(rot);
+    scene.MarkChange();
+    scene.UnlockAccess();
+    client.send(scene.getMobileObj(_name).GetUpdateObj());
   return true;
 }
 

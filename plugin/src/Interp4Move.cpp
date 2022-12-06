@@ -56,14 +56,54 @@ const char* Interp4Move::GetCmdName() const
 /*!
  *
  */
-bool Interp4Move::ExecCmd( MobileObj  *pMobObj,  int  Socket) const
+bool Interp4Move::ExecCmd( Scene& scene, Client&client) const
 {
-  /*
-   *  Tu trzeba napisać odpowiedni kod.
-   */
+  std::cout << "poczatek move";
+  Vector3D pos;
+  Vector3D rot;
+  Vector3D tmp;
+  Vector3D new_pos;
+  tmp[0]=0;tmp[1]=0;tmp[2]=0;
+  pos = scene.getMobileObj(_Name).GetPosition_m();
+  rot[0] = scene.getMobileObj(_Name).GetAng_Roll_deg();
+  rot[1] = scene.getMobileObj(_Name).GetAng_Pitch_deg();
+  rot[2] = scene.getMobileObj(_Name).GetAng_Yaw_deg();
+  double duration = _Length_mm/_Speed_mmS;
+  double steps=(int)(duration*100);
+  double step_time = duration/steps;
+  double step_length = _Length_mm/steps;
+for(int i=0; i<steps; i++)
 
-
-
+{
+  tmp[0] += step_length * cos(rot[1] * M_PI / 180) * cos(rot[2] * M_PI / 180);
+    tmp[1] += step_length* (cos(rot[0] * M_PI / 180) * sin(rot[2] * M_PI / 180) + cos(rot[2] * M_PI / 180) * sin(rot[1] * M_PI / 180) * sin(rot[0] * M_PI / 180));
+    tmp[2] += step_length * (sin(rot[0] * M_PI / 180) * sin(rot[2] * M_PI / 180) - cos(rot[0] * M_PI / 180) * cos(rot[2] * M_PI / 180) * sin(rot[1] * M_PI / 180));
+    new_pos[0] = tmp[0] + pos[0];
+    new_pos[1] = tmp[1] + pos[1];
+    new_pos[2] = tmp[2] + pos[2];
+    scene.LockAccess(); 
+    scene.getMobileObj(_Name).SetPosition_m(new_pos);
+    scene.MarkChange();
+    scene.UnlockAccess();
+    usleep(step_time * 1000000);
+    client.send(scene.getMobileObj(_Name).GetUpdateObj());
+}
+double remaining_length = _Length_mm-(steps*step_length);
+if(remaining_length)
+{
+  tmp[0] += remaining_length * cos(rot[1] * M_PI / 180) * cos(rot[2] * M_PI / 180);
+    tmp[1] += remaining_length* (cos(rot[0] * M_PI / 180) * sin(rot[2] * M_PI / 180) + cos(rot[2] * M_PI / 180) * sin(rot[1] * M_PI / 180) * sin(rot[0] * M_PI / 180));
+    tmp[2] += remaining_length * (sin(rot[0] * M_PI / 180) * sin(rot[2] * M_PI / 180) - cos(rot[0] * M_PI / 180) * cos(rot[2] * M_PI / 180) * sin(rot[1] * M_PI / 180));
+    new_pos[0] = tmp[0] + pos[0];
+    new_pos[1] = tmp[1] + pos[1];
+    new_pos[2] = tmp[2] + pos[2];
+    scene.LockAccess(); 
+    scene.getMobileObj(_Name).SetPosition_m(new_pos);
+    scene.MarkChange();
+    scene.UnlockAccess();
+    usleep(step_time * 1000000);
+    client.send(scene.getMobileObj(_Name).GetUpdateObj());
+}
   return true;
 }
 
@@ -89,7 +129,7 @@ bool Interp4Move::ReadParams(std::istream& Strm_CmdsList)
  */
 Interp4Command* Interp4Move::CreateCmd()
 {
-  return new Interp4Move();
+  return (new Interp4Move());
 }
 
 
