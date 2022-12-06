@@ -17,10 +17,10 @@ int Executor::initialize(std::string cmdFName) {
       _command->ReadParams(_stream);
       if (_libs_handler.isParallel()) {
         parallel_actions.push_back(
-            std::thread(&Interp4Command::ExecCmd, _command, _scene));
+            std::thread(&Interp4Command::ExecCmd, _command, std::ref(_scene)));
       } else {
         for (int i = 0; i < parallel_actions.size(); i++) {
-          if (parallel_actions[i].joinable()) parallel_actions[i].join();
+          parallel_actions[i].join();
         }
         _command->ExecCmd(_scene);
       }
