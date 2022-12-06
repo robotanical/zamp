@@ -56,14 +56,13 @@ bool Interp4Rotate::ExecCmd(Scene& scene) const {
 
   double tmp = 0;
   for (int i = 0; i < steps; ++i) {
-    scene.LockAccess();  // Lock access to the scene to modify something :)
+    scene.LockAccess();
     tmp += step_deg;
     rot[2] = tmp + rot[2];
     scene.getMobileObj(_name).SetRotation(rot);
     scene.MarkChange();
     scene.UnlockAccess();
     usleep(step_duration * 1000000);
-    // client.send(scene.getMobileObj(_name).GetUpdateObj());
   }
   return true;
 

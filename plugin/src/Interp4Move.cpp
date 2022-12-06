@@ -100,7 +100,6 @@ bool Interp4Move::ExecCmd(Scene& scene) const {
     scene.MarkChange();
     scene.UnlockAccess();
     usleep(step_time * 1000000);
-    // client.send(scene.getMobileObj(_Name).GetUpdateObj());
   }
   return true;
 }

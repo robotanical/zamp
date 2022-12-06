@@ -12,7 +12,7 @@
   Pause 1000 
   Move  Podstawa.Ramie1  1 10
   begin_parallel
-  Rotate Podstawa.Ramie1 ROTATE_SPEED 60 
+  Move Podstawa.Ramie1 1 6
   Move  Podstawa.Ramie1.Ramie2 1 20  
   end_parallel         
   
