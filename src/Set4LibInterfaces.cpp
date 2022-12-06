@@ -26,16 +26,16 @@ Interp4Command *Set4LibInterfaces::getCommand(std::string keyword) {
     std::cout << "parallel true" << std::endl;
   } else if (keyword == "end_parallel") {
     std::cout << "parallel false" << std::endl;
+  } else {
+    std::map<std::string, std::shared_ptr<LibInterface>>::iterator iterator =
+        _libs.find(keyword);
+    if (iterator == _libs.end()) {
+      std::cout << "Brak wtyczki : " << keyword << std::endl;
+      return nullptr;
+    }
+    handler = iterator->second;
+    return handler->CreateCmd();
   }
-
-  std::map<std::string, std::shared_ptr<LibInterface>>::iterator iterator =
-      _libs.find(keyword);
-  if (iterator == _libs.end()) {
-    std::cout << "Brak wtyczki : " << keyword << std::endl;
-    return NULL;
-  }
-  handler = iterator->second;
-  return handler->CreateCmd();
 }
 int Set4LibInterfaces::initialize(std::vector<std::string> lib_names) {
   for (std::string &name : lib_names) {

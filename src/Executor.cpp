@@ -13,8 +13,10 @@ int Executor::initialize(std::string cmdFName) {
   _parser.execPreprocessor(_stream);
   while (_stream >> key) {
     _command = _libs_handler.getCommand(key);
-    _command->ReadParams(_stream);
-    _command->ExecCmd(_scene, _client);
+    if (_command != nullptr) {
+      _command->ReadParams(_stream);
+      _command->ExecCmd(_scene, _client);
+    }
   }
   return 0;
 }
